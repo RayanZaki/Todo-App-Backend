@@ -26,3 +26,4 @@ class Todo(EntityMeta):
             "title": self.title.__str__(),
             "text": self.text.__str__(),
         }
+

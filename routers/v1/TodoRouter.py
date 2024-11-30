@@ -18,21 +18,9 @@ def index(
     todoService: TodoService = Depends(),
 ):
     
-    todos, total = todoService.list(
+    return todoService.list(
             pageSize, startIndex
         )
-    
-    next_page = (startIndex + pageSize) // pageSize if startIndex + pageSize < total  else None
-    prev_page = (startIndex - pageSize) // pageSize if startIndex - pageSize >= 0  else None
-
-    return {
-    "data": [
-        todo.normalize()
-        for todo in todos
-    ], 
-    "next_page": next_page, 
-    "previous_page": prev_page
-    }
 
 
 @TodoRouter.get("/{id}", response_model=TodoSchema)
@@ -64,5 +52,5 @@ def update(
     "/{id}", status_code=status.HTTP_204_NO_CONTENT
 )
 def delete(id: int, todoService: TodoService = Depends()):
-    return todoService.delete(id)
+        return todoService.delete(id)
 
