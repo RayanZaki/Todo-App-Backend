@@ -34,4 +34,4 @@ EXPOSE 8000
 # For a Flask app:
 # CMD ["pipenv", "run", "flask", "run", "--host=0.0.0.0"]
 # Or for Django:
-CMD ["pipenv", "run", "uvicorn", "main:app", "--reload"]
+CMD ["pipenv", "run", "uvicorn", "main:app", "--reload", "--host", "0.0.0.0"]

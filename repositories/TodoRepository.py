@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from fastapi import Depends
 from sqlalchemy.orm import Session, lazyload
@@ -21,30 +21,31 @@ class TodoRepository:
         self,
         limit: Optional[int],
         start: Optional[int],
-    ) -> List[Todo]:
+    ) -> Tuple[List[Todo], int]:
         query = self.db.query(Todo)
 
+        
+        return query.offset(start).limit(limit).all(), query.count()
 
-        return query.offset(start).limit(limit).all()
-
-    def get(self, book: Todo) -> Todo:
+    def get(self, todo: Todo) -> Todo:
         return self.db.get(
-            Todo, book.id
+            Todo, todo.id
         )
 
-    def create(self, book: Todo) -> Todo:
-        self.db.add(book)
+    def create(self, todo: Todo) -> Todo:
+        self.db.add(todo)
         self.db.commit()
-        self.db.refresh(book)
-        return book
+        self.db.refresh(todo)
+        return todo
 
-    def update(self, id: int, book: Todo) -> Todo:
-        book.id = id
-        self.db.merge(book)
+    def update(self, id: int, todo: Todo) -> Todo:
+        todo.id = id
+        self.db.merge(todo)
         self.db.commit()
-        return book
+        return todo
 
-    def delete(self, book: Todo) -> None:
-        self.db.delete(book)
+    def delete(self, todo: Todo) -> None:
+        todo = self.db.query(Todo).filter(Todo.id == todo.id).first()
+        self.db.delete(todo)
         self.db.commit()
         self.db.flush()

@@ -7,6 +7,6 @@ EntityMeta = declarative_base()
 
 
 def init():
-    # EntityMeta.metadata.drop_all(bind=Engine)
-    # EntityMeta.metadata.create_all(bind=Engine)
-    pass
+    EntityMeta.metadata.drop_all(bind=Engine)
+    EntityMeta.metadata.create_all(bind=Engine)
+    

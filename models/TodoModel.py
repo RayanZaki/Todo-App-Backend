@@ -15,14 +15,14 @@ class Todo(EntityMeta):
 
     id = Column(Integer)
     title = Column(String(40), nullable=True)
-    content = Column(String(100), nullable=False)
+    text = Column(String(100), nullable=False)
     
 
     PrimaryKeyConstraint(id)
 
     def normalize(self):
         return {
-            "id": self.id.__str__(),
-            "title": self.name.__str__(),
-            "content": self.content.__str__(),
+            "id": self.id,
+            "title": self.title.__str__(),
+            "text": self.text.__str__(),
         }

@@ -10,8 +10,7 @@ services:
     entrypoint: >
       sh -c "
       apk add --no-cache gettext &&
-      envsubst < /sql/init_template.sql > /sql/init_script.sql &&
-      envsubst < /app/alembic_template.ini > /app/alembic.init
+      envsubst < /sql/init_template.sql > /sql/init_script.sql
       "
     environment:
       MYSQLROOT_PASSWORD: rootpassword
@@ -66,7 +65,7 @@ services:
       - DATABASE_USERNAME=myuser
       - DEBUG_MODE=true
     ports:
-      - "5000:5000"  # Expose the app on port 5000
+      - "5000:8000"  # Expose the app on port 5000
     volumes:
       - .:/app
     depends_on:

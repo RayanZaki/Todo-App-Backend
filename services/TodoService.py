@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from fastapi import Depends
 from models.TodoModel import Todo
@@ -19,30 +19,32 @@ class TodoService:
     ) -> None:
         self.bookRepository = bookRepository
 
-    def create(self, book_body: TodoSchema) -> Todo:
-        return self.bookRepository.create(
-            Todo(name=book_body.name)
+    def create(self, todo_body: TodoSchema) -> Todo:
+        db_todo = self.bookRepository.create(
+            Todo(text=todo_body.text, title=todo_body.title)
         )
+        return db_todo
 
-    def delete(self, book_id: int) -> None:
-        return self.bookRepository.delete(Todo(id=book_id))
+    def delete(self, todo_id: int) -> None:
+        return self.bookRepository.delete(Todo(id=todo_id))
 
-    def get(self, book_id: int) -> Todo:
-        return self.bookRepository.get(Todo(id=book_id))
+    def get(self, todo_id: int) -> Todo:
+        return self.bookRepository.get(Todo(id=todo_id))
 
     def list(
         self,
         pageSize: Optional[int] = 100,
         startIndex: Optional[int] = 0,
-    ) -> List[Todo]:
+    ) -> Tuple[List[Todo], int]:
+        
         return self.bookRepository.list(
             pageSize, startIndex
         )
 
     def update(
-        self, book_id: int, book_body: TodoSchema
+        self, book_id: int, todo_body: TodoSchema
     ) -> Todo:
         return self.bookRepository.update(
-            book_id, Todo(name=book_body.name)
+            book_id, Todo(title=todo_body.title, text=todo_body.text)
         )
 
