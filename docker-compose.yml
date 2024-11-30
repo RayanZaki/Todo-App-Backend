@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+  # MySQL Service
+  preprocessor:
+    image: alpine:latest
+    volumes:
+      - ./sql:/sql
+      - ./:/app
+    entrypoint: >
+      sh -c "
+      apk add --no-cache gettext &&
+      envsubst < /sql/init_template.sql > /sql/init_script.sql &&
+      envsubst < /app/alembic_template.ini > /app/alembic.init
+      "
+    environment:
+      MYSQLROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: todo
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: todo
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+
+    ports:
+      - "3306:3306"
+   
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin-container
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+
+  # Python Backend Service
+  python-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python-backend-container
+    restart: always
+    environment:
+      - DATABASE_DIALECT=mysql
+      - DATABASE_HOSTNAME=mysql
+      - DATABASE_NAME=todo
+      - DATABASE_PASSWORD=mypassword
+      - DATABASE_PORT=3306
+      - DATABASE_USERNAME=myuser
+      - DEBUG_MODE=true
+    ports:
+      - "5000:5000"  # Expose the app on port 5000
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
