@@ -1,3 +1,4 @@
+from routers.v1.StatsRouter import StatsRouter 
 from fastapi import Depends, FastAPI
 # from strawberry import Schema
 # from strawberry.fastapi import GraphQLRouter
@@ -22,7 +23,7 @@ app = FastAPI(
 
 # Add Routers
 app.include_router(TodoRouter)
-
+app.include_router(StatsRouter)
 # GraphQL Schema and Application Instance
 # schema = Schema(query=Query, mutation=Mutation)
 # graphql = GraphQLRouter(

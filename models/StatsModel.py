@@ -24,6 +24,7 @@ class Statistics(EntityMeta):
 
     def normalize(self):
         return {
+            "n_total_todos": self.n_total_todos,
             "n_todos": self.n_todos,
             "n_modified": self.n_modified,
             "n_modifications": self.n_modifications,
