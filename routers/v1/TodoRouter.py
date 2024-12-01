@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, BackgroundTasks
 
 from schemas.pydantic.TodoSchema import (
     TodoPostRequestSchema,
@@ -35,9 +35,11 @@ def get(id: int, todoService: TodoService = Depends()):
 )
 def create(
     todo: TodoPostRequestSchema,
+    backgroundTasks: BackgroundTasks,
     todoService: TodoService = Depends(),
 ):
-    return todoService.create(todo).normalize()
+    
+    return todoService.create(todo, backgroundTasks).normalize()
 
 
 @TodoRouter.patch("/{id}", response_model=TodoSchema)
@@ -51,6 +53,6 @@ def update(
 @TodoRouter.delete(
     "/{id}", status_code=status.HTTP_204_NO_CONTENT
 )
-def delete(id: int, todoService: TodoService = Depends()):
-        return todoService.delete(id)
+def delete(id: int, backgroundTasks: BackgroundTasks, todoService: TodoService = Depends()):
+        return todoService.delete(id, backgroundTasks)
 

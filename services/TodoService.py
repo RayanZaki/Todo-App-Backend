@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Optional, Tuple
 
-from fastapi import Depends, status, HTTPException
+from services.StatsService import StatsService
+from fastapi import Depends, status, HTTPException, BackgroundTasks
 from models.TodoModel import Todo
 
 from repositories.TodoRepository import TodoRepository
@@ -10,29 +11,34 @@ from schemas.pydantic.TodoSchema import (
 
 
 class TodoService:
-    bookRepository: TodoRepository
+    statsService: StatsService
+    todoRepository: TodoRepository
 
     def __init__(
         self,
-        bookRepository: TodoRepository = Depends(),
+        todoRepository: TodoRepository = Depends(),
+        statsService: StatsService = Depends(),
     ) -> None:
-        self.bookRepository = bookRepository
+        self.todoRepository = todoRepository
+        self.statsService = statsService
 
-    def create(self, todo_body: TodoSchema) -> Todo:
-        db_todo = self.bookRepository.create(
+    def create(self, todo_body: TodoSchema, backgroundTasks: BackgroundTasks) -> Todo:
+        backgroundTasks.add_task(self.statsService.increment_todo_count)
+        return self.todoRepository.create(
             Todo(text=todo_body.text, title=todo_body.title)
         )
-        return db_todo
 
-    def delete(self, todo_id: int) -> None:
-        if not self.bookRepository.get(Todo(id=todo_id)):
+    def delete(self, todo_id: int, backgroundTasks: BackgroundTasks) -> None:
+        if not self.todoRepository.get(Todo(id=todo_id)):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
-        return self.bookRepository.delete(Todo(id=todo_id))
+        
+        backgroundTasks.add_task(self.statsService.increment_deleted_count)
+        return self.todoRepository.delete(Todo(id=todo_id))
 
     def get(self, todo_id: int) -> Todo:
-        if not self.bookRepository.get(Todo(id=todo_id)):
+        if not self.todoRepository.get(Todo(id=todo_id)):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
-        return self.bookRepository.get(Todo(id=todo_id))
+        return self.todoRepository.get(Todo(id=todo_id))
 
     def list(
         self,
@@ -40,7 +46,7 @@ class TodoService:
         startIndex: Optional[int] = 0,
     ) -> Dict[str, Any]:
         
-        todos, total = self.bookRepository.list(
+        todos, total = self.todoRepository.list(
             pageSize, startIndex
         )
 
@@ -59,7 +65,7 @@ class TodoService:
     def update(
         self, book_id: int, todo_body: TodoSchema
     ) -> Todo:
-        return self.bookRepository.update(
-            book_id, Todo(title=todo_body.title, text=todo_body.text)
+        return self.todoRepository.update(
+            book_id, todo_body
         )
 
