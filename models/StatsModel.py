@@ -13,6 +13,7 @@ class Statistics(EntityMeta):
     __tablename__ = "stats"
 
     id = Column(Integer)
+    n_total_todos = Column(Integer, nullable=False, default=0)
     n_todos = Column(Integer, nullable=False, default=0)
     n_modified = Column(Integer, nullable=False, default=0)
     n_modifications = Column(Integer, nullable=False, default=0)

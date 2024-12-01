@@ -6,6 +6,7 @@ from models.TodoModel import Todo
 
 from repositories.TodoRepository import TodoRepository
 from schemas.pydantic.TodoSchema import (
+    TodoPatchRequestSchema,
     TodoSchema,
 )
 
@@ -63,9 +64,16 @@ class TodoService:
     }
 
     def update(
-        self, book_id: int, todo_body: TodoSchema
+        self, todo_id: int, todo_body: TodoPatchRequestSchema
     ) -> Todo:
+        
+        if not self.todoRepository.get(Todo(id=todo_id)):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found")
+
+        todo_dict = todo_body.dict(exclude_unset=True)
+
         return self.todoRepository.update(
-            book_id, todo_body
+            todo_id, todo_dict
         )
+
 

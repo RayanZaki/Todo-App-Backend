@@ -2,6 +2,7 @@ from typing import List, Optional, Tuple
 
 from fastapi import Depends
 from sqlalchemy.orm import Session, lazyload
+from sqlalchemy.sql import update
 
 from configs.Database import (
     get_db_connection,
@@ -38,11 +39,11 @@ class TodoRepository:
         self.db.refresh(todo)
         return todo
 
-    def update(self, id: int, todo: Todo) -> Todo:
-        todo.id = id
-        self.db.merge(todo)
+    def update(self, id: int, todo: dict) -> Todo:
+        upd = ( update(Todo).where(Todo.id == id).values(**todo))
+        self.db.execute(upd)
         self.db.commit()
-        return todo
+        return self.get(Todo(id=id))
 
     def delete(self, todo: Todo) -> None:
         todo = self.db.query(Todo).filter(Todo.id == todo.id).first()

@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, status, BackgroundTasks
 
 from schemas.pydantic.TodoSchema import (
+    TodoPatchRequestSchema,
     TodoPostRequestSchema,
     TodoSchema,
 )
@@ -45,7 +46,7 @@ def create(
 @TodoRouter.patch("/{id}", response_model=TodoSchema)
 def update(
     id: int,
-    todo: TodoPostRequestSchema,
+    todo: TodoPatchRequestSchema,
     todoService: TodoService = Depends(),
 ):
     return todoService.update(id, todo).normalize()

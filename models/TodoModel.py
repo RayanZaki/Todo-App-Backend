@@ -30,4 +30,13 @@ class Todo(EntityMeta):
             "done": self.done,
             "modified": self.modified,
         }
+    
+    @staticmethod
+    def from_dict(data: dict):
+        todo = Todo()
+        todo.title = data.get("title")
+        todo.text = data.get("text")
+        todo.done = data.get("done")
+        todo.modified = data.get("modified")
+        return todo
 

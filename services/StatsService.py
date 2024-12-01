@@ -19,6 +19,7 @@ class StatsService:
     def increment_todo_count(self):
         stats = self.get()
         stats.n_todos += 1
+        stats.n_total_todos += 1
         print("updating")
         return self.statsRepository.update(stats)
     
