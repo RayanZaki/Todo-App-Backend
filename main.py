@@ -1,5 +1,6 @@
 from routers.v1.StatsRouter import StatsRouter 
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 # from strawberry import Schema
 # from strawberry.fastapi import GraphQLRouter
 
@@ -21,23 +22,18 @@ app = FastAPI(
     openapi_tags=Tags,
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Add Routers
 app.include_router(TodoRouter)
 app.include_router(StatsRouter)
-# GraphQL Schema and Application Instance
-# schema = Schema(query=Query, mutation=Mutation)
-# graphql = GraphQLRouter(
-#     schema,
-#     graphiql=env.DEBUG_MODE,
-#     context_getter=get_graphql_context,
-# )
 
-# Integrate GraphQL Application to the Core one
-# app.include_router(
-#     graphql,
-#     prefix="/graphql",
-#     include_in_schema=False,
-# )
 
 # Initialise Data Model Attributes
 # init()
