@@ -2,37 +2,45 @@
 
 ## Description
 
-_Example Application Interface using FastAPI framework in Python 3_
 
-This example showcases Repository Pattern in Hexagonal Architecture _(also known as Clean Architecture)_. Here we have two Entities - Todos and Stats, Where Todos is the main CRUD endpoint in REST with Stats tracking the numbers and statistics about the Todos CRUD endpoint in REST under OpenAPI standard.
+This Project showcases Repository Pattern in Hexagonal Architecture _(also known as Clean Architecture)_. Here we have two Entities - Todos and Stats, Where Todos is the main CRUD endpoint in REST with Stats tracking the numbers and statistics about the Todos CRUD endpoint in REST under OpenAPI standard.
 
-## Installation
 
-- Install all the project dependency using [Pipenv](https://pipenv.pypa.io):
+## Clone Repository:
+```bash
+git clone git@github.com:RayanZaki/Todo-App-Backend.git
+cd Todo-App-Backend
+```
+## Installation (OPTION 1) -- Docker:
 
-  ```sh
-  $ pipenv install --dev
-  ```
+- First Check the `docker-compose.yml` where you will find the environment vars:
 
-- Run the application from command prompt:
+- Generate the database intialization script:
+```bash
+docker-compose up preprocessor
+```
 
-  ```sh
-  $ pipenv run uvicorn main:app --reload
-  ```
+- Initalize the Database:
+```bash
+sudo docker-compose up -d mysql
+```
 
-- You can also open a shell inside virtual environment:
-
-  ```sh
-  $ pipenv shell
-  ```
+- launch the rest of the app:
+```bash
+sudo docker-compose up
+```
+- migrate the database:
+```bash
+sudo docker exec -it python-backend-container pipenv run alembic upgrade head
+```
 
 - Open `localhost:8000/docs` for API Documentation
 
-- Open `localhost:8000/graphql` for GraphQL Documentation
+- You will have access to a php my admin portal on [localhost:8080](http://localhost:8080)
+  - Username: `myuser`
+  - Password: `mypassword`
+  - Credentials are provided in the docker-compose file
+- Your app is hosted on `localhost:8000/`
+- You can test [localhost:8000/v1/todos](http://localhost:8000/v1/todos)
 
-_*Note:* In case you are not able to access `pipenv` from you `PATH` locations, replace all instances of `pipenv` with `python3 -m pipenv`._
 
-
-
-
-## Using docker

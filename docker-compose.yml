@@ -68,7 +68,7 @@ services:
       - DATABASE_URL=mysql://myuser:mypassword@mysql:3306/todo
       - DEBUG_MODE=true
     ports:
-      - "5000:8000"  # Expose the app on port 5000
+      - "8000:8000"  # Expose the app on port 5000
     volumes:
       - .:/app
     depends_on:
