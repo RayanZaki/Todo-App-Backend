@@ -1,10 +1,25 @@
 # fastapi-clean-example
 
-## Description
+# Todo Statistics API
 
+This project is a simple API built with **FastAPI** for managing a todo list application. It includes functionality for creating, reading, updating, and deleting todo items, along with tracking statistics such as the total number of todos, modifications, deletions, and more.
 
-This Project showcases Repository Pattern in Hexagonal Architecture _(also known as Clean Architecture)_. Here we have two Entities - Todos and Stats, Where Todos is the main CRUD endpoint in REST with Stats tracking the numbers and statistics about the Todos CRUD endpoint in REST under OpenAPI standard.
+## Features:
+- **Todo Management**: CRUD operations for todos (create, read, update, delete).
+- **Statistics Tracking**: Tracks overall stats like the number of todos, modifications, deletions, and more.
+- **Background Tasks**: Uses background tasks to increment statistics on todo creation, deletion, and modification.
+- **Pagination**: Allows pagination of the todo list for efficient data retrieval.
+- **Database Integration**: Uses **SQLAlchemy** for database operations with a PostgreSQL database.
+- **Database Migrations**: Uses **Alembic** for managing database schema changes and migrations.
 
+## Technologies:
+- **FastAPI**: High-performance API framework for building RESTful services.
+- **SQLAlchemy**: ORM for interacting with the PostgreSQL database.
+- **Pydantic**: Data validation and serialization.
+- **PostgreSQL**: Relational database for storing todos and statistics.
+- **Alembic**: Database migration tool for managing schema changes in a versioned manner.
+
+This project is designed to help users manage todos while also providing insights into the overall statistics of the application. It can be easily extended to include more features or integrated into a larger application.
 
 ## Clone Repository:
 ```bash
