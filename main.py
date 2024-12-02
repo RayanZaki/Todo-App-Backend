@@ -1,6 +1,8 @@
 from routers.v1.StatsRouter import StatsRouter 
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_swagger_ui_html, get_redoc_html
+
 # from strawberry import Schema
 # from strawberry.fastapi import GraphQLRouter
 
@@ -17,8 +19,8 @@ env = get_environment_variables()
 
 # Core Application Instance
 app = FastAPI(
-    title=env.APP_NAME,
-    version=env.API_VERSION,
+    title="env.APP_NAME",
+    version="env.API_VERSION",
     openapi_tags=Tags,
 )
 
@@ -34,7 +36,7 @@ app.add_middleware(
 app.include_router(TodoRouter)
 app.include_router(StatsRouter)
 
-
+# print(app.openapi())
 # Initialise Data Model Attributes
 # init()
 

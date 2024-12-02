@@ -1,10 +1,10 @@
 Tags = [
     {
-        "name": "author",
-        "description": "Contains CRUD operation on Authors",
+        "name": "Todo",
+        "description": "Contains CRUD operation on Todos",
     },
     {
-        "name": "book",
-        "description": "Contains CRUD operation on Books",
+        "name": "Stats",
+        "description": "Contains CRUD operation on Statistics",
     },
 ]

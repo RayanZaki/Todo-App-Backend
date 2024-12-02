@@ -3,15 +3,15 @@ from pydantic import BaseModel, Field
 
 
 class TodoPostRequestSchema(BaseModel):
-    title: str = Field(title="Title of the Todo", default="No Title")
-    text: str = Field(title="Text of the Todo")
+    title: str = Field(description="Title of the Todo", default="No Title")
+    text: str = Field(description="Text of the Todo")
 
 
 class TodoPatchRequestSchema(BaseModel):
-    title: Optional[str] = Field(title="Title of the Todo", required=False, default=None)
-    text: Optional[str] = Field(title="Text of the Todo", required=False, default=None)
-    done: Optional[bool] = Field(title="Done status of the Todo", required=False, default=None)
-    modified: Optional[bool] = Field(title="Modified status of the Todo", required=False, default=None)
+    title: Optional[str] = Field(description="Title of the Todo", default=None)
+    text: Optional[str] = Field(description="Text of the Todo", default=None)
+    done: Optional[bool] = Field(description="Done status of the Todo", default=None)
+    modified: Optional[bool] = Field(description="Modified status of the Todo", default=None)
 
 class TodoSchema(TodoPatchRequestSchema):
-    id: int = Field(...,title="ID of the Todo")
+    id: int = Field(...,description="ID of the Todo")
