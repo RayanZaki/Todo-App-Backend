@@ -48,11 +48,11 @@ class TodoService:
     ) -> Dict[str, Any]:
         
         todos, total = self.todoRepository.list(
-            pageSize, startIndex
+            pageSize, startIndex * pageSize
         )
 
-        next_page = (startIndex + pageSize) // pageSize if startIndex + pageSize < total and todos else None
-        prev_page = (startIndex - pageSize) // pageSize if startIndex - pageSize >= 0 and todos  else None
+        next_page = (startIndex * pageSize + pageSize) // pageSize if startIndex * pageSize + pageSize < total and todos else None
+        prev_page = (startIndex * pageSize - pageSize) // pageSize if startIndex * pageSize - pageSize >= 0 and todos  else None
         
         return {
         "data": [

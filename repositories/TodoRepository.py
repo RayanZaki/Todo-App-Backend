@@ -24,7 +24,11 @@ class TodoRepository:
         start: Optional[int],
     ) -> Tuple[List[Todo], int]:
         query = self.db.query(Todo)
+        query = query.order_by(Todo.id.desc())
 
+        if limit == -1:
+            return query.all(), query.count()
+        # order 
         
         return query.offset(start).limit(limit).all(), query.count()
 
