@@ -19,6 +19,7 @@ class EnvironmentSettings(BaseSettings):
     DATABASE_PASSWORD: str
     DATABASE_PORT: int
     DATABASE_USERNAME: str
+    DATABASE_URL: str
     DEBUG_MODE: bool
 
     class Config:
